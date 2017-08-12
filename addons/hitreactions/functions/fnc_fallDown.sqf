@@ -10,6 +10,9 @@
  * Return Value:
  * None
  *
+ * Example:
+ * [player, kevin, 5] call ACE_hitreactions_fnc_fallDown
+ *
  * Public: No
  */
 #include "script_component.hpp"
@@ -27,11 +30,14 @@ if (_unit == _firer) exitWith {};
 
 // camshake for player
 if (_unit == ACE_player) then {
+    if (visibleMap) then {
+        openMap false;
+    };
     addCamShake [3, 5, _damage + random 10];
 };
 
 // play scream sound
-if (!isNil QUOTE(EFUNC(medical,playInjuredSound))) then {
+if (!isNil QEFUNC(medical,playInjuredSound)) then {
     [_unit] call EFUNC(medical,playInjuredSound);
 };
 

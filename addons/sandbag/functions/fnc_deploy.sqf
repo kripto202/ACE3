@@ -21,13 +21,12 @@ params ["_unit"];
 [_unit, "forceWalk", "ACE_Sandbag", true] call EFUNC(common,statusEffect_set);
 
 // create the sandbag
-private "_sandBag";
-_sandBag = createVehicle ["ACE_SandbagObject_NoGeo", [0, 0, 0], [], 0, "NONE"];
+private _sandBag = createVehicle ["ACE_SandbagObject_NoGeo", [0, 0, 0], [], 0, "NONE"];
 
 GVAR(sandBag) = _sandBag;
 
 // prevent collisions with sandbag
-["enableSimulationGlobal", [_sandBag, false]] call EFUNC(common,serverEvent);
+[QEGVAR(common,enableSimulationGlobal), [_sandBag, false]] call CBA_fnc_serverEvent;
 
 GVAR(deployDirection) = 0;
 

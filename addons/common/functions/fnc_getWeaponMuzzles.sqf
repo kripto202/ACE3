@@ -8,6 +8,9 @@
  * Return Value:
  * All weapon muzzles <ARRAY>
  *
+ * Example:
+ * ["gun"] call ace_common_fnc_getWeaponMuzzles
+ *
  * Public: Yes
  */
 #include "script_component.hpp"
@@ -18,7 +21,7 @@ private _muzzles = getArray (configFile >> "CfgWeapons" >> _weapon >> "muzzles")
 
 {
     if (_x == "this") then {
-        _muzzles set [_forEachIndex, _weapon];
+        _muzzles set [_forEachIndex, configName (configFile >> "CfgWeapons" >> _weapon)];
     };
 } forEach _muzzles;
 

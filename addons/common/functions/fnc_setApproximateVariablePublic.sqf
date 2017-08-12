@@ -2,14 +2,14 @@
  * Author: esteldunedain
  * Publish a variable if it's different enough from the previously published value.
  *
- * Argument:
+ * Arguments:
  * 0: Object the variable should be assigned to <OBJECT>
  * 1: Name of the variable <STRING>
  * 2: Value of the variable <ANY>
  * 3: Absolute tolerance <NUMBER>
  *
- * Return value:
- * Nothing.
+ * Return Value:
+ * None
  *
  * Example:
  * [player, "balls", 2, 0.1] call ace_common_fnc_setApproximateVariablePublic;

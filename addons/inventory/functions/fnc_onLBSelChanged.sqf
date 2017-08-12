@@ -10,6 +10,9 @@
  * Return Value:
  * None
  *
+ * Example:
+ * [CONTROL, 5] call ACE_inventory_fnc_onLBSelChanged
+ *
  * Public: No
  */
 #include "script_component.hpp"
@@ -24,4 +27,4 @@ GVAR(selectedFilterIndex) = _index;
     params ["_display"];
 
     [_display] call FUNC(forceItemListUpdate);
-}, [ctrlParent _filter]] call EFUNC(common,execNextFrame);
+}, [ctrlParent _filter]] call CBA_fnc_execNextFrame;

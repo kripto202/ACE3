@@ -5,8 +5,11 @@
  * Arguments:
  * 0: The Unit <OBJECT>
  *
- * ReturnValue:
- * nil
+ * Return Value:
+ * None
+ *
+ * Example:
+ * [bob] call ACE_medical_fnc_init
  *
  * Public: No
  */
@@ -47,9 +50,7 @@ _unit setVariable [QGVAR(triageLevel), 0, true];
 _unit setVariable [QGVAR(triageCard), [], true];
 
 // IVs
-_unit setVariable [QGVAR(salineIVVolume), 0, true];
-_unit setVariable [QGVAR(plasmaIVVolume), 0, true];
-_unit setVariable [QGVAR(bloodIVVolume), 0, true];
+_unit setVariable [QGVAR(ivBags), nil, true];
 
 // damage storage
 _unit setVariable [QGVAR(bodyPartStatus), [0,0,0,0,0,0], true];
@@ -86,4 +87,4 @@ _unit setVariable [QGVAR(allLogs), [], true];
 // items
 [{
     _this call FUNC(itemCheck);
-}, [_unit], 0.5, 0.1] call EFUNC(common,waitAndExecute);
+}, [_unit], 0.5, 0.1] call CBA_fnc_waitAndExecute;

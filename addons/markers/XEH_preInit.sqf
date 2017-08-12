@@ -2,7 +2,9 @@
 
 ADDON = false;
 
+PREP_RECOMPILE_START;
 #include "XEH_PREP.hpp"
+PREP_RECOMPILE_END;
 
 // init marker types
 if (isNil QGVAR(MarkersCache)) then {
@@ -50,6 +52,6 @@ if (isNil QGVAR(MarkerColorsCache)) then {
 };
 
 //Server Sync JIP markers:
-[QGVAR(sendMarkersJIP), FUNC(sendMarkersJIP)] call EFUNC(common,addEventHandler);
+[QGVAR(sendMarkersJIP), FUNC(sendMarkersJIP)] call CBA_fnc_addEventHandler;
 
 ADDON = true;

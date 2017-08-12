@@ -9,6 +9,9 @@
  * Return Value:
  * None
  *
+ * Example:
+ * [] call ace_advanced_ballistics_fnc_handleFired
+ *
  * Public: No
  */
 #include "script_component.hpp"
@@ -41,12 +44,6 @@ if (!GVAR(simulateForEveryone) && !(local _unit)) then {
 };
 //if (!GVAR(vehicleGunnerEnabled) && !(_unit isKindOf "Man")) then { _abort = true; }; // We currently do not have firedEHs on vehicles
 if (GVAR(disabledInFullAutoMode) && getNumber(configFile >> "CfgWeapons" >> _weapon >> _mode >> "autoFire") == 1) then { _abort = true; };
-
-if (_abort || !(GVAR(extensionAvailable))) exitWith {
-    if (missionNamespace getVariable [QEGVAR(windDeflection,enabled), false]) then {
-        EGVAR(windDeflection,trackedBullets) pushBack [_projectile, getNumber(configFile >> "CfgAmmo" >> _ammo >> "airFriction")];
-    };
-};
 
 // Get Weapon and Ammo Configurations
 _AmmoCacheEntry = uiNamespace getVariable format[QGVAR(%1), _ammo];
@@ -86,9 +83,15 @@ if (GVAR(ammoTemperatureEnabled) || GVAR(barrelLengthInfluenceEnabled)) then {
     };
 };
 
+if (_abort || !(GVAR(extensionAvailable))) exitWith {
+    if (missionNamespace getVariable [QEGVAR(windDeflection,enabled), false]) then {
+        EGVAR(windDeflection,trackedBullets) pushBack [_projectile, getNumber(configFile >> "CfgAmmo" >> _ammo >> "airFriction")];
+    };
+};
+
 _bulletTraceVisible = false;
 if (GVAR(bulletTraceEnabled) && cameraView == "GUNNER") then {
-    if (currentWeapon ACE_player in ["ACE_Vector", "Binocular", "Rangefinder", "Laserdesignator"]) then {
+    if (currentWeapon ACE_player == binocular ACE_player) then {
         _bulletTraceVisible = true;
     } else {
         if (currentWeapon ACE_player == primaryWeapon ACE_player && count primaryWeaponItems ACE_player > 2) then {
@@ -110,8 +113,8 @@ if (_caliber > 0 && _bulletLength > 0 && _bulletMass > 0 && _barrelTwist > 0) th
 
 GVAR(currentbulletID) = (GVAR(currentbulletID) + 1) % 10000;
 
-_aceTimeSecond = floor ACE_time;
-"ace_advanced_ballistics" callExtension format["new:%1:%2:%3:%4:%5:%6:%7:%8:%9:%10:%11:%12:%13:%14:%15:%16:%17:%18", GVAR(currentbulletID), _airFriction, _ballisticCoefficients, _velocityBoundaries, _atmosphereModel, _dragModel, _stabilityFactor, _twistDirection, _muzzleVelocity, _transonicStabilityCoef, getPosASL _projectile, EGVAR(common,mapLatitude), EGVAR(weather,currentTemperature), EGVAR(common,mapAltitude), EGVAR(weather,currentHumidity), overcast, _aceTimeSecond, ACE_time - _aceTimeSecond];
+_aceTimeSecond = floor CBA_missionTime;
+"ace_advanced_ballistics" callExtension format["new:%1:%2:%3:%4:%5:%6:%7:%8:%9:%10:%11:%12:%13:%14:%15:%16:%17:%18", GVAR(currentbulletID), _airFriction, _ballisticCoefficients, _velocityBoundaries, _atmosphereModel, _dragModel, _stabilityFactor, _twistDirection, _muzzleVelocity, _transonicStabilityCoef, getPosASL _projectile, EGVAR(common,mapLatitude), EGVAR(weather,currentTemperature), EGVAR(common,mapAltitude), EGVAR(weather,currentHumidity), overcast, _aceTimeSecond, CBA_missionTime - _aceTimeSecond];
 
 GVAR(allBullets) pushBack [_projectile, _caliber, _bulletTraceVisible, GVAR(currentbulletID)];
 

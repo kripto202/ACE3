@@ -2,11 +2,14 @@
  * Author: commy2
  * Update compatible info elements.
  *
- * Argument:
+ * Arguments:
  * None
  *
- * Return value:
+ * Return Value:
  * None
+ *
+ * Example:
+ * call ace_fcs_fnc_updateRangeHUD
  *
  * Public: No
  */

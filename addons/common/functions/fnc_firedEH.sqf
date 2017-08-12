@@ -2,7 +2,7 @@
  * Author: esteldunedain
  * Unfied handling of weapon fire
  *
- * Argument:
+ * Arguments:
  * 0: unit - Object the event handler is assigned to <OBJECT>
  * 1: weapon - Fired weapon <STRING>
  * 2: muzzle - Muzzle that was used <STRING>
@@ -11,8 +11,11 @@
  * 5: magazine - magazine name which was used <STRING>
  * 6: projectile - Object of the projectile that was shot <OBJECT>
  *
- * Return value:
+ * Return Value:
  * None
+ *
+ * Example:
+ * [bob, "gun", "muzzle", "single", "ammo", "magazine", "bullet"] call ace_common_fnc_firedEH
  *
  * Public: No
  */
@@ -26,12 +29,12 @@ TRACE_7("firedEH:",_unit, _weapon, _muzzle, _mode, _ammo, _magazine, _projectile
 if (_unit isKindOf "CAManBase") then {
     // The unit it on foot
     if (_unit == ACE_player) then {
-        ["firedPlayer", _this] call FUNC(localEvent);
+        ["ace_firedPlayer", _this] call CBA_fnc_localEvent;
     } else {
         if ([_unit] call EFUNC(common,isPlayer)) then {
-            ["firedPlayerNonLocal", _this] call FUNC(localEvent);
+            ["ace_firedPlayerNonLocal", _this] call CBA_fnc_localEvent;
         } else {
-            ["firedNonPlayer", _this] call FUNC(localEvent);
+            ["ace_firedNonPlayer", _this] call CBA_fnc_localEvent;
         };
     };
 } else {
@@ -55,12 +58,12 @@ if (_unit isKindOf "CAManBase") then {
     };
 
     if (_gunner == ACE_player) then {
-        ["firedPlayerVehicle", _this] call FUNC(localEvent);
+        ["ace_firedPlayerVehicle", _this] call CBA_fnc_localEvent;
     } else {
         if ([_gunner] call EFUNC(common,isPlayer)) then {
-            ["firedPlayerVehicleNonLocal", _this] call FUNC(localEvent);
+            ["ace_firedPlayerVehicleNonLocal", _this] call CBA_fnc_localEvent;
         } else {
-            ["firedNonPlayerVehicle", _this] call FUNC(localEvent);
+            ["ace_firedNonPlayerVehicle", _this] call CBA_fnc_localEvent;
         };
     };
 };

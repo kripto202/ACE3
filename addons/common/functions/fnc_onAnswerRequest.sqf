@@ -3,10 +3,15 @@
  * N/A
  *
  * Arguments:
- * ?
+ * 0: Unit <OBJECT>
+ * 1: ID? <STRING>
+ * 2: Accepted <BOOL>
  *
  * Return Value:
- * ?
+ * None
+ *
+ * Example:
+ * [bob, "ID", true] call ace_common_fnc_onAnswerRequest
  *
  * Public: No
  */
@@ -20,7 +25,7 @@ if (!isNil "_info") then {
     _info params ["_caller", "_target", "_requestID", "_requestMessage", "_callBack"];
 
     private _replyParams = [_info, _accepted];
-    [_replyParams, QFUNC(requestCallback), _caller, false] call FUNC(execRemoteFnc);
+    [QGVAR(requestCallback), _replyParams, _caller] call CBA_fnc_targetEvent;
     _unit setVariable [_id, nil];
 };
 

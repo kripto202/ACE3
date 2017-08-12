@@ -2,12 +2,18 @@
  * Author: commy2 and esteldunedain
  * Display the ammo of the currently loaded magazine of the target or count rifle grenades.
  *
- * Argument:
+ * Arguments:
  * 0: Target <OBJECT>
  *
- * Return value:
- * Nothing
+ * Return Value:
+ * None
+ *
+ * Example:
+ * [bob] call ace_reload_fnc_displayAmmo
+ *
+ * Public: No
  */
+
 #include "script_component.hpp"
 
 #define COUNT_BARS 12

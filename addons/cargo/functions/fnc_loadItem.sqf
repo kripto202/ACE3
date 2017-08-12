@@ -7,13 +7,13 @@
  * 0: Item <OBJECT or STRING>
  * 1: Vehicle <OBJECT>
  *
- * Return value:
+ * Return Value:
  * Object loaded <BOOL>
  *
  * Example:
  * [object, vehicle] call ace_cargo_fnc_loadItem
  *
- * Public: No
+ * Public: Yes
  */
 #include "script_component.hpp"
 
@@ -35,7 +35,7 @@ _vehicle setVariable [QGVAR(space), _space - _itemSize, true];
 if (_item isEqualType objNull) then {
     detach _item;
     _item attachTo [_vehicle,[0,0,-100]];
-    ["hideObjectGlobal", [_item, true]] call EFUNC(common,serverEvent);
+    [QEGVAR(common,hideObjectGlobal), [_item, true]] call CBA_fnc_serverEvent;
 };
 
 true

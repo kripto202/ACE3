@@ -2,14 +2,17 @@
  * Author: esteldunedain
  * Collect a entire tree of active actions
  *
- * Argument:
+ * Arguments:
  * 0: Object <OBJECT>
  * 1: Original action tree <ARRAY>
  * 2: Parent path <ARRAY>
  * 3: Distance to base point (will be 0 for self/zeus/in-vehicle) <NUMBER>
  *
- * Return value:
+ * Return Value:
  * Active children <ARRAY>
+ *
+ * Example:
+ * [bob, [array], [array], 5] call ACE_interact_menu_fnc_collectActoveActionTree
  *
  * Public: No
  */

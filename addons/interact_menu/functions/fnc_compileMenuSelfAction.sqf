@@ -2,15 +2,18 @@
  * Author: NouberNou and esteldunedain
  * Compile the self action menu from config for an object's class
  *
- * Argument:
+ * Arguments:
  * 0: Object or class name <OBJECT> or <STRING>
  *
- * Return value:
+ * Return Value:
  * None
+ *
+ * Example:
+ * [bob] call ACE_interact_menu_fnc_compileMenuSelfAction
  *
  * Public: No
  */
-#include "script_component.hpp";
+#include "script_component.hpp"
 
 params ["_target"];
 

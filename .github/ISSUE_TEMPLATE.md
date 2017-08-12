@@ -1,10 +1,12 @@
 **Arma 3 Version:** `x.xx` (stable / rc / dev)
-**CBA Version:** `2.x.x` (stable / dev + commit hash)
+**CBA Version:** `3.x.x` (stable / dev + commit hash)
 **ACE3 Version:** `3.x.x` (stable / dev + commit hash)
 
 **Mods:**
-- `@CBA_A3`
-- `@ace`
+```
+- CBA_A3
+- ace
+```
 
 **Description:**
 - Add a detailed description of the error. This makes it easier for us to fix the issue.

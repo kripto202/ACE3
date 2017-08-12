@@ -7,7 +7,7 @@
  * 1: Reason to hide the unit <STRING>
  *
  * Return Value:
- * nil
+ * None <NIL>
  *
  * Example:
  * [ACE_Player, "SpectatorMode"] call ace_common_fnc_hideUnit
@@ -28,5 +28,5 @@ if !(_reason in _setHiddenReasons) then {
 };
 
 if !(isObjectHidden _unit) then {
-    ["hideObjectGlobal", [_unit, true]] call FUNC(serverEvent);
+    [QGVAR(hideObjectGlobal), [_unit, true]] call CBA_fnc_serverEvent;
 };

@@ -2,7 +2,7 @@
  * Author: jaynus
  * Handles synced events being received. Server will log them, and server/client will execute them.
  *
- * Arguments [Client] :
+ * Arguments: [Client]
  * 0: eventName <STRING>
  * 1: arguments <ARRAY>
  * 2: ttl <NUMBER>
@@ -10,28 +10,28 @@
  * Return Value:
  * Boolean of success <BOOL>
  *
+ * Example:
+ * [bob] call ace_common_fnc__handleSyncedEvent
+ *
  * Public: No
  */
 #include "script_component.hpp"
 
 params ["_name", "_args", "_ttl"];
 
-if (!HASH_HASKEY(GVAR(syncedEvents),_name)) exitWith {
-    ACE_LOGERROR("Synced event key not found.");
+if !([GVAR(syncedEvents), _name] call CBA_fnc_hashHasKey) exitWith {
+    ERROR_1("Synced event key [%1] not found (_handleSyncedEvent).", _name);
     false
 };
 
-private _internalData = HASH_GET(GVAR(syncedEvents),_name);
+private _internalData = [GVAR(syncedEvents), _name] call CBA_fnc_hashGet;
+_internalData params ["_eventCode", "_eventLog"];
 
 if (isServer) then {
     // Server needs to internally log it for synchronization
     if (_ttl > -1) then {
-        _internalData = HASH_GET(GVAR(syncedEvents),_name);
-
-        _internalData params ["", "_eventLog"];
-        _eventLog pushBack [ACE_diagTime, _args, _ttl];
+        _eventLog pushBack [diag_tickTime, _args, _ttl];
     };
 };
 
-_internalData params ["_eventCode"];
 _args call _eventCode;

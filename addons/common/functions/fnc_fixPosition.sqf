@@ -3,11 +3,14 @@
  *
  * Fixes position of an object. E.g. moves object above ground and adjusts to terrain slope. Requires local object.
  *
- * Argument:
+ * Arguments:
  * Object <OBJECT>
  *
  * Return Value:
  * None
+ *
+ * Example:
+ * [bob] call ace_common_fnc_fixPosition
  *
  * Public: No
  */

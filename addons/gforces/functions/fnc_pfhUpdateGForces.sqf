@@ -2,24 +2,27 @@
  * Author: KoffeinFlummi and esteldunedain
  * Calculates average g-forces and triggers g-effects
  *
- * Argument:
+ * Arguments:
  * 0: Arguments <ARRAY>
  * 1: pfh_id <NUMBER>
  *
- * Return value:
+ * Return Value:
  * None
+ *
+ * Example:
+ * [[args], 5] call ace_gforces_fnc_pfhUpdateGForces
  *
  * Public: No
  */
  #include "script_component.hpp"
 
-EXPLODE_2_PVT(_this,_params,_pfhId);
-
 // Update the g-forces at constant mission time intervals (taking accTime into account)
-if ((ACE_time - GVAR(lastUpdateTime)) < INTERVAL) exitWith {};
-GVAR(lastUpdateTime) = ACE_time;
+if ((CBA_missionTime - GVAR(lastUpdateTime)) < INTERVAL) exitWith {};
+GVAR(lastUpdateTime) = CBA_missionTime;
 
-if (isNull ACE_player || !(alive ACE_player)) exitWith {};
+if (GVAR(playerIsVirtual) || {!alive ACE_player}) exitWith {};
+
+BEGIN_COUNTER(everyInterval);
 
 private _newVel = velocity (vehicle ACE_player);
 private _accel = ((_newVel vectorDiff GVAR(oldVel)) vectorMultiply (1 / INTERVAL)) vectorAdd [0, 0, 9.8];
@@ -27,7 +30,7 @@ private _accel = ((_newVel vectorDiff GVAR(oldVel)) vectorMultiply (1 / INTERVAL
 private _currentGForce = (((_accel vectorDotProduct vectorUp (vehicle ACE_player)) / 9.8) max -10) min 10;
 
 GVAR(GForces) set [GVAR(GForces_Index), _currentGForce];
-GVAR(GForces_Index) = (GVAR(GForces_Index) + 1) % round (AVERAGEDURATION / INTERVAL);
+GVAR(GForces_Index) = (GVAR(GForces_Index) + 1) % 30; // 30 = round (AVERAGEDURATION / INTERVAL);
 GVAR(oldVel) = _newVel;
 
 /* Source: https://github.com/KoffeinFlummi/AGM/issues/1774#issuecomment-70341573
@@ -91,3 +94,5 @@ if !(ACE_player getVariable ["ACE_isUnconscious", false]) then {
 };
 
 GVAR(GForces_CC) ppEffectCommit INTERVAL;
+
+END_COUNTER(everyInterval);

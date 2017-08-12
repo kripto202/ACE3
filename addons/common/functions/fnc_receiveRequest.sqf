@@ -3,10 +3,17 @@
  * N/A
  *
  * Arguments:
- * ?
+ * 0: caller <OBJECT>
+ * 1: target <OBJECT>
+ * 2: requestID <STRING>
+ * 3: Message <STRING>
+ * 4: callback (NOT USED) <CODE>
  *
  * Return Value:
  * None
+ *
+ * Example:
+ * [bob, kevin, "ID", "Message", {Callback}] call ace_common_fnc_recieveRequest
  *
  * Public: No
  */
@@ -45,7 +52,7 @@ GVAR(RECIEVE_REQUEST_ADD_ACTION_DECLINE) = _target addAction ["Decline", compile
 
 GVAR(RECIEVE_REQUEST_ID_KEY_BINDING) = _requestID;
 
-GVAR(RECIEVE_REQUEST_TIME_OUT_SCRIPT) = [ACE_time, _target, _requestID] spawn { // @todo
+GVAR(RECIEVE_REQUEST_TIME_OUT_SCRIPT) = [CBA_missionTime, _target, _requestID] spawn { // @todo
     params ["_time", "_target", "_requestID"];
 
     _time = _time + 40;
@@ -55,7 +62,7 @@ GVAR(RECIEVE_REQUEST_TIME_OUT_SCRIPT) = [ACE_time, _target, _requestID] spawn { 
     waitUntil {
         _id = _target getVariable _requestID;
 
-        (ACE_time > _time || isNil "_id")
+        (CBA_missionTime > _time || isNil "_id")
     };
 
     _target setVariable [_requestID, nil];

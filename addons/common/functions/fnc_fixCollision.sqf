@@ -8,6 +8,9 @@
  * Return Value:
  * None
  *
+ * Example:
+ * [bob] call ace_common_fnc_fixCollision
+ *
  * Public: No
  */
 #include "script_component.hpp"
@@ -19,4 +22,4 @@ if (!local _this) exitWith {};
 [_this, "blockDamage", "fixCollision", true] call FUNC(statusEffect_set);
 
 // re-allow damage after 2 seconds
-[{[_this, "blockDamage", "fixCollision", false] call FUNC(statusEffect_set);}, _this, 2] call EFUNC(common,waitAndExecute);
+[{[_this, "blockDamage", "fixCollision", false] call FUNC(statusEffect_set);}, _this, 2] call CBA_fnc_waitAndExecute;

@@ -2,11 +2,11 @@
  * Author: ACE2 Team
  * Updates GVAR(currentTemperature) based on the map data
  *
- * Argument:
- * Nothing
+ * Arguments:
+ * None
  *
- * Return value:
- * Nothing
+ * Return Value:
+ * None
  *
  * Example:
  * [] call ace_weather_fnc_updateTemperature

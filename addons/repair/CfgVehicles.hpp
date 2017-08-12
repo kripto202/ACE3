@@ -15,14 +15,14 @@
         }; \
     };
 
-class CBA_Extended_EventHandlers;
+class CBA_Extended_EventHandlers_base;
 
 class CfgVehicles {
     class ACE_Module;
     class ACE_moduleRepairSettings: ACE_Module {
         scope = 2;
         displayName = CSTRING(moduleName);
-        icon = QUOTE(PATHTOF(ui\Icon_Module_Repair_ca.paa));
+        icon = QPATHTOF(ui\Icon_Module_Repair_ca.paa);
         category = "ACE_Logistics";
         function = QFUNC(moduleRepairSettings);
         functionPriority = 1;
@@ -32,23 +32,23 @@ class CfgVehicles {
         author = ECSTRING(Common,ACETeam);
         class Arguments {
             class engineerSetting_Repair {
-                displayName = CSTRING(enginerSetting_Repair_name);
-                description = CSTRING(enginerSetting_Repair_description);
+                displayName = CSTRING(engineerSetting_Repair_name);
+                description = CSTRING(engineerSetting_Repair_description);
                 typeName = "NUMBER";
                 class values {
                     class anyone { name = CSTRING(engineerSetting_anyone); value = 0; };
                     class Engineer { name = CSTRING(engineerSetting_EngineerOnly); value = 1; default = 1; };
-                    class Special { name = CSTRING(engineerSetting_RepairSpecialistOnly); value = 2; };
+                    class Advanced { name = CSTRING(engineerSetting_AdvancedOnly); value = 2; };
                 };
             };
             class engineerSetting_Wheel {
-                displayName = CSTRING(enginerSetting_Wheel_name);
-                description = CSTRING(enginerSetting_Wheel_description);
+                displayName = CSTRING(engineerSetting_Wheel_name);
+                description = CSTRING(engineerSetting_Wheel_description);
                 typeName = "NUMBER";
                 class values {
                     class anyone { name = CSTRING(engineerSetting_anyone); value = 0; default = 1; };
                     class Engineer { name = CSTRING(engineerSetting_EngineerOnly); value = 1; };
-                    class Special { name = CSTRING(engineerSetting_RepairSpecialistOnly); value = 2; };
+                    class Advanced { name = CSTRING(engineerSetting_AdvancedOnly); value = 2; };
                 };
             };
             class repairDamageThreshold {
@@ -91,7 +91,7 @@ class CfgVehicles {
                 class values {
                     class anyone { name = CSTRING(engineerSetting_anyone); value = 0; };
                     class Engineer { name = CSTRING(engineerSetting_EngineerOnly); value = 1; };
-                    class Special { name = CSTRING(engineerSetting_RepairSpecialistOnly); value = 2; default = 1;};
+                    class Advanced { name = CSTRING(engineerSetting_AdvancedOnly); value = 2; default = 1;};
                 };
             };
             class addSpareParts {
@@ -120,7 +120,7 @@ class CfgVehicles {
     class ACE_moduleAssignEngineerRoles: Module_F {
         scope = 2;
         displayName = CSTRING(AssignEngineerRole_Module_DisplayName);
-        icon = QUOTE(PATHTOF(ui\Icon_Module_Repair_ca.paa));
+        icon = QPATHTOF(ui\Icon_Module_Repair_ca.paa);
         category = "ACE_Logistics";
         function = QFUNC(moduleAssignEngineer);
         functionPriority = 10;
@@ -150,7 +150,7 @@ class CfgVehicles {
                         default = 1;
                     };
                     class doctor {
-                        name = CSTRING(AssignEngineerRole_role_specialist);
+                        name = CSTRING(AssignEngineerRole_role_advanced);
                         value = 2;
                     };
                 };
@@ -164,7 +164,7 @@ class CfgVehicles {
     class ACE_moduleAssignRepairVehicle: Module_F {
         scope = 2;
         displayName = CSTRING(AssignRepairVehicle_Module_DisplayName);
-        icon = QUOTE(PATHTOF(ui\Icon_Module_Repair_ca.paa));
+        icon = QPATHTOF(ui\Icon_Module_Repair_ca.paa);
         category = "ACE_Logistics";
         function = QFUNC(moduleAssignRepairVehicle);
         functionPriority = 10;
@@ -236,7 +236,7 @@ class CfgVehicles {
     class ACE_moduleAddSpareParts: Module_F {
         scope = 2;
         displayName = CSTRING(AddSpareParts_Module_DisplayName);
-        icon = QUOTE(PATHTOF(ui\Icon_Module_Repair_ca.paa));
+        icon = QPATHTOF(ui\Icon_Module_Repair_ca.paa);
         category = "ACE_Logistics";
         function = QFUNC(moduleAddSpareParts);
         functionPriority = 10;
@@ -290,6 +290,10 @@ class CfgVehicles {
         MACRO_REPAIRVEHICLE
     };
 
+    class Motorcycle: LandVehicle {
+        MACRO_REPAIRVEHICLE
+    };
+
     class Air;
     class Helicopter: Air {
         MACRO_REPAIRVEHICLE
@@ -307,14 +311,17 @@ class CfgVehicles {
     class ThingX;
     class ACE_RepairItem_Base: ThingX {
         class EventHandlers {
-            class CBA_Extended_EventHandlers: CBA_Extended_EventHandlers {};
+            class CBA_Extended_EventHandlers: CBA_Extended_EventHandlers_base {};
+        };
+        class ACE_Actions {
+            class ACE_MainActions {
+                modifierFunction = QUOTE(_this call FUNC(modifyInteraction));
+            };
         };
 
-        icon = "iconObject_circle";
-        mapSize = 0.7;
         accuracy = 0.2;
         vehicleClass = "ACE_Logistics_Items";
-        destrType = "DesturctNo";
+        destrType = "DesturctNo"; // scripted delayed destruction
     };
 
     class ACE_Track: ACE_RepairItem_Base {
@@ -322,8 +329,27 @@ class CfgVehicles {
         EGVAR(cargo,canLoad) = 1;
         author = "Hawkins";
         scope = 2;
-        model = QUOTE(PATHTOF(data\ace_track.p3d));
+        model = QPATHTOF(data\ace_track.p3d);
         displayName = CSTRING(SpareTrack);
+        icon = "iconObject_2x1";
+        mapSize = 0.5;
+
+        // damage handling
+        armor = 0.6;
+        armorStructural = 1;
+        minTotalDamageThreshold = 0.01;
+        explosionShielding = 1;
+        replaceDamagedLimit = 0.9;
+        selectionDamage = "mat_track";
+
+        class Damage {
+            tex[] = {};
+            mat[] = {
+                QPATHTO_R(data\trailObjects_steel.rvmat),
+                QPATHTO_R(data\trailObjects_steel_damage.rvmat),
+                QPATHTO_R(data\trailObjects_steel_destruct.rvmat)
+            };
+        };
     };
 
     class ACE_Wheel: ACE_RepairItem_Base {
@@ -331,9 +357,45 @@ class CfgVehicles {
         EGVAR(cargo,canLoad) = 1;
         author = "Hawkins";
         scope = 2;
-        model = QUOTE(PATHTOF(data\ace_wheel.p3d));
+        model = QPATHTOF(data\ace_wheel.p3d);
         displayName = CSTRING(SpareWheel);
-        picture = QUOTE(PATHTOF(ui\tire_ca.paa));
+        picture = QPATHTOF(ui\tire_ca.paa);
+        icon = "iconObject_circle";
+        mapSize = 0.7;
+
+        // damage handling
+        armor = 0.05;
+        armorStructural = 1;
+        minTotalDamageThreshold = 0.01;
+        explosionShielding = 1;
+        replaceDamagedLimit = 0.9;
+        selectionDamage = "mat_tyre"; //"mat_rim"
+
+        // necessary because only one "selectionDamage" (== "visual") is allowed for simple damage objects
+        // can not take damage individually though, because of limitations of the thingX simulation type
+        class HitPoints {
+            class HitBody {
+                armor = 0.6;
+                material = -1;
+                name = "mat_rim";
+                visual = "mat_rim";
+                passThrough = 1;
+                radius = 0.1;
+                explosionShielding = 1;
+            };
+        };
+
+        class Damage {
+            tex[] = {};
+            mat[] = {
+                QPATHTO_R(data\trailObjects_tyre.rvmat),
+                QPATHTO_R(data\trailObjects_tyre_damage.rvmat),
+                QPATHTO_R(data\trailObjects_tyre_damage.rvmat),
+                QPATHTO_R(data\trailObjects_steel.rvmat),
+                QPATHTO_R(data\trailObjects_steel_damage.rvmat),
+                QPATHTO_R(data\trailObjects_steel_destruct.rvmat)
+            };
+        };
     };
 
     // disable vanilla repair
@@ -409,7 +471,7 @@ class CfgVehicles {
         transportRepair = 0;
     };
 
-    class Truck_02_engineeral_base_F: Truck_02_box_base_F {
+    class Truck_02_medical_base_F: Truck_02_box_base_F {
         GVAR(canRepair) = 0;
     };
 

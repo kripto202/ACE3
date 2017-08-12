@@ -13,23 +13,23 @@
  * Return Value:
  * Succesful treatment started <BOOL>
  *
+ * Example:
+ * [medic, patient, "Selectionname", "bandage", "bandage", -1] call ace_medical_fnc_treatmentAdvanced_bandage
+ *
  * Public: Yes
  */
 
 #include "script_component.hpp"
+
 params ["_caller", "_target", "_selectionName", "_className", "_items", "", ["_specificSpot", -1]];
 
 [_target, "activity", LSTRING(Activity_bandagedPatient), [[_caller, false, true] call EFUNC(common,getName)]] call FUNC(addToLog);
 [_target, "activity_view", LSTRING(Activity_bandagedPatient), [[_caller, false, true] call EFUNC(common,getName)]] call FUNC(addToLog); // TODO expand message
 
-if !([_target] call FUNC(hasMedicalEnabled)) exitWith {
-    _this call FUNC(treatmentBasic_bandage);
-};
-
 if (local _target) then {
-    ["treatmentAdvanced_bandageLocal", [_target, _className, _selectionName, _specificSpot]] call EFUNC(common,localEvent);
+    [QGVAR(treatmentAdvanced_bandageLocal), [_target, _className, _selectionName, _specificSpot]] call CBA_fnc_localEvent;
 } else {
-    ["treatmentAdvanced_bandageLocal", _target, [_target, _className, _selectionName, _specificSpot]] call EFUNC(common,targetEvent);
+    [QGVAR(treatmentAdvanced_bandageLocal), [_target, _className, _selectionName, _specificSpot], _target] call CBA_fnc_targetEvent;
 };
 
 /*    {

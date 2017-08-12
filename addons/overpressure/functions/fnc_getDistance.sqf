@@ -3,12 +3,12 @@
  * Calculate the distance to the first intersection of a line
  *
  * Arguments:
- * 0: Pos ASL of origin (ARRAY>
+ * 0: Pos ASL of origin <ARRAY>
  * 1: Direction <ARRAY>
- * 2: Max distance to search <Number>
+ * 2: Max distance to search <NUMBER>
  * 3: Shooter <OBJECT>
  *
- * Return value:
+ * Return Value:
  * Distance to intersection (999 if distance is greater than max) <NUMBER>
  *
  * Example:
@@ -30,7 +30,7 @@ private _distance = 999;
 {
     _x params ["_intersectPosASL", "_surfaceNormal", "_intersectObject"];
     TRACE_3("Intersect",_intersectPosASL,_surfaceNormal,_intersectObject);
-    
+
     //Hit something solid that can reflect - (Static covers Building)  [Need to manually filter out _shoot for FFV shots]
     if ((isNull _intersectObject) || {(_intersectObject != _shooter) && {(_intersectObject isKindOf "Static") || {_intersectObject isKindOf "AllVehicles"}}}) exitWith {
         _distance = _posASL vectorDistance _intersectPosASL;
@@ -38,7 +38,7 @@ private _distance = 999;
 
         if (isNull _intersectObject) then {  //Terrain:
             // Calculate the angle between the terrain and the back blast direction
-            _angle = 90 - acos (- (_surfaceNormal vectorDotProduct _direction));
+            private _angle = 90 - acos (- (_surfaceNormal vectorDotProduct _direction));
             TRACE_3("Terrain Intersect",_surfaceNormal,_direction,_angle);
             // Angles is below 25deg, no backblast at all
             if (_angle < 25) exitWith {_distance = 999};

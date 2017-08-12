@@ -2,11 +2,11 @@
  * Author: ACE2 Team
  * Updates GVAR(currentHumidity)
  *
- * Argument:
- * Nothing
+ * Arguments:
+ * None
  *
- * Return value:
- * Nothing
+ * Return Value:
+ * None
  *
  * Example:
  * [] call ace_weather_fnc_updateHumidity
@@ -27,7 +27,7 @@ if ((rain > 0) && {overcast > 0.7}) then {
     private _PS2 = 6.112 * exp((17.62 * GVAR(currentTemperature)) / (243.12 + GVAR(currentTemperature)));
     GVAR(currentHumidity) = GVAR(currentHumidity) * _PS1 / _PS2;
     GVAR(currentHumidity) = GVAR(currentHumidity) + GVAR(humidityShift);
-    
+
     TRACE_1("humidityShift",GVAR(humidityShift));
 };
 

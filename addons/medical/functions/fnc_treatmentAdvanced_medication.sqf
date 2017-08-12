@@ -12,6 +12,9 @@
  * Return Value:
  * Succesful treatment started <BOOL>
  *
+ * Example:
+ * [medic, patient, "selectionName", "bandage", 2] call ace_medical_fnc_treatmentAdvanced_medication
+ *
  * Public: Yes
  */
 
@@ -22,7 +25,7 @@ TRACE_5("params",_caller,_target,_selectionName,_className,_items);
 
 private _part = [_selectionName] call FUNC(selectionNameToNumber);
 
-["treatmentAdvanced_medicationLocal", [_target], [_target, _className, _part]] call EFUNC(common,targetEvent);
+[QGVAR(treatmentAdvanced_medicationLocal), [_target, _className, _part], [_target]] call CBA_fnc_targetEvent;
 
 {
     if (_x != "") then {

@@ -2,11 +2,14 @@
  * Author: PabstMirror
  * Builds color strings needed for displaying interaction text
  *
- * Argument:
+ * Arguments:
  * None
  *
- * Return value:
+ * Return Value:
  * None
+ *
+ * Example:
+ * call ACE_interact_menu_fnc_setupTextColor
  *
  * Public: No
  */

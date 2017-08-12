@@ -8,6 +8,9 @@
  * Return Value:
  * None
  *
+ * Example:
+ * [] call ace_common_fnc_headBugFix
+ *
  * Public: Yes
  *
  * Note: Has to be spawned not called
@@ -17,8 +20,8 @@
 private _unit = ACE_player;
 private _anim = animationState _unit;
 
-["HeadbugFixUsed", [profileName, _anim]] call FUNC(serverEvent);
-["HeadbugFixUsed", [profileName, _anim]] call FUNC(localEvent);
+[QGVAR(headbugFixUsed), [profileName, _anim]] call CBA_fnc_serverEvent;
+[QGVAR(headbugFixUsed), [profileName, _anim]] call CBA_fnc_localEvent;
 
 if (_unit != vehicle _unit  || {!([_unit, objNull, ["isNotSitting"]] call FUNC(canInteractWith))}) exitWith {false};
 

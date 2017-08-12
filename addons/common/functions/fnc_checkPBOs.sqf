@@ -14,6 +14,9 @@
  * Return Value:
  * None
  *
+ * Example:
+ * [0, false, ""] call ace_common_fnc_checkPBOs
+ *
  * Public: Yes
  */
 #include "script_component.hpp"
@@ -61,8 +64,9 @@ if (!isServer) then {
                 _error = _error + "Newer version; ";
             };
 
-            //[_error, "{systemChat _this}"] call FUNC(execRemoteFnc);
-            ACE_LOGERROR(_error);
+            //[QGVAR(systemChatGlobal), _error] call CBA_fnc_globalEvent;
+
+            ERROR(_error);
 
             if (_mode < 2) then {
                 _text = composeText [lineBreak, parseText format ["<t align='center'>%1</t>", _text]];
@@ -79,7 +83,7 @@ if (!isServer) then {
                         params ["_rscLayer"];
                         TRACE_2("Hiding Error message after 10 seconds",time,_rscLayer);
                         _rscLayer cutFadeOut 0.2;
-                    }, [_rscLayer], 10] call FUNC(waitAndExecute);
+                    }, [_rscLayer], 10] call CBA_fnc_waitAndExecute;
                 };
             };
 
@@ -89,7 +93,7 @@ if (!isServer) then {
                     TRACE_2("Player is alive, showing msg and exiting",time,_text);
                     _text = composeText [parseText format ["<t align='center'>%1</t>", _text]];
                     ["[ACE] ERROR", _text, {findDisplay 46 closeDisplay 0}] call FUNC(errorMessage);
-                }, [_text]] call FUNC(waitUntilAndExecute);
+                }, [_text]] call CBA_fnc_waitUntilAndExecute;
             };
         };
 

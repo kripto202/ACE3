@@ -1,7 +1,12 @@
 #include "script_component.hpp"
 
-["overpressure", FUNC(overpressureDamage)] call EFUNC(common,addEventHandler);
+["ace_settingsInitialized", {
+    TRACE_1("settingsInit eh",GVAR(distanceCoefficient));
+    if (GVAR(distanceCoefficient) <= 0) exitWith {};
 
-// Register fire event handler
-["firedPlayer", DFUNC(firedEHBB)] call EFUNC(common,addEventHandler);
-["firedPlayerVehicle", DFUNC(firedEHOP)] call EFUNC(common,addEventHandler);
+    ["ace_overpressure", LINKFUNC(overpressureDamage)] call CBA_fnc_addEventHandler;
+
+    // Register fire event handler
+    ["ace_firedPlayer", LINKFUNC(firedEHBB)] call CBA_fnc_addEventHandler;
+    ["ace_firedPlayerVehicle", LINKFUNC(firedEHOP)] call CBA_fnc_addEventHandler;
+}] call CBA_fnc_addEventHandler;

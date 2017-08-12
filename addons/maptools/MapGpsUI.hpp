@@ -26,7 +26,7 @@ class RscTitles {
                 y = Y_gps;
                 w = W_gps;
                 h = H_gps;
-                text = PATHTOF(UI\mapGps.paa);
+                text = QPATHTOF(UI\mapGps.paa);
                 colorBackground[] = {1, 1, 1, 1};
             };
             class heading: RscText{
@@ -40,7 +40,8 @@ class RscTitles {
                 colorBackground[] = {0,0,0,0};
                 colorText[] = {0.247,0.251,0.157,1};
                 shadowColo[] = {0,0,0,0};
-                font = "EtelkaNarrowMediumPro";
+                // EtelkaNarrowMediumPro broke with 1.72 hotfix, can revert back to that font if fixed (following 3 uses of PuristaSemibold)
+                font = "PuristaSemibold"; 
                 shadow = 0;
                 sizeEx = 0.042;
             };
@@ -55,7 +56,7 @@ class RscTitles {
                 colorBackground[] = {0,0,0,0};
                 colorText[] = {0.247,0.251,0.157,1};
                 shadowColo[] = {0,0,0,0};
-                font = "EtelkaNarrowMediumPro";
+                font = "PuristaSemibold";
                 shadow = 0;
                 sizeEx = 0.042;
             };
@@ -70,7 +71,7 @@ class RscTitles {
                 colorBackground[] = {0,0,0,0};
                 colorText[] = {0.247,0.251,0.157,1};
                 shadowColo[] = {0,0,0,0};
-                font = "EtelkaNarrowMediumPro";
+                font = "PuristaSemibold";
                 shadow = 0;
                 sizeEx = 0.1;
             };

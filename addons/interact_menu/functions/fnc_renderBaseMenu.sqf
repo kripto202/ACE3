@@ -2,13 +2,16 @@
  * Author: NouberNou and esteldunedain
  * Render the interaction menu for a base action
  *
- * Argument:
+ * Arguments:
  * 0: Object <OBJECT>
  * 1: Action node <ARRAY>
  * 2: 3D position or 2D position <ARRAY> (Optional)
  *
- * Return value:
+ * Return Value:
  * Was the menu rendered <BOOL>
+ *
+ * Example:
+ * [bob, [node], [0, 0, 0]] call ACE_interact_menu_fnc_renderBaseMenu
  *
  * Public: No
  */
@@ -61,17 +64,17 @@ if ((_sPos select 0) < safeZoneXAbs || {(_sPos select 0) > safeZoneXAbs + safeZo
 if ((_sPos select 1) < safeZoneY    || {(_sPos select 1) > safeZoneY    + safeZoneH}) exitWith {false};
 
 
-BEGIN_COUNTER(fnc_collectActiveActionTree)
+BEGIN_COUNTER(fnc_collectActiveActionTree);
 
 // Collect active tree
 private _uid = format [QGVAR(ATCache_%1), _actionName];
 private _activeActionTree = [
                         [_object, _baseActionNode, [], _distanceToBasePoint],
                         DFUNC(collectActiveActionTree),
-                        _object, _uid, 1.0, "interactMenuClosed"
+                        _object, _uid, 1.0, "ace_interactMenuClosed"
                     ] call EFUNC(common,cachedCall);
 
-END_COUNTER(fnc_collectActiveActionTree)
+END_COUNTER(fnc_collectActiveActionTree);
 
 #ifdef DEBUG_MODE_EXTRA
 diag_log "Printing: _activeActionTree";
@@ -79,9 +82,6 @@ diag_log "Printing: _activeActionTree";
     params ["_level", "_node"];
     _node params ["_actionData", "_children", "_object"];
     diag_log text format ["Level %1 -> %2 on %3", _level, _actionData select 0, _object];
-    {
-        [_level + 1, _x] call _fnc_print;
-    } forEach _children;
 };
 #endif
 
@@ -90,9 +90,8 @@ if (_activeActionTree isEqualTo []) exitWith {false};
 
 BEGIN_COUNTER(fnc_renderMenus);
 
-// IGNORE_PRIVATE_WARNING(_cameraPosASL,_cameraDir);
 if (count _pos > 2) then {
-    _sPos pushBack (((AGLtoASL _pos) vectorDiff _cameraPosASL) vectorDotProduct _cameraDir);
+    _sPos pushBack (((AGLtoASL _pos) vectorDiff GVAR(cameraPosASL)) vectorDotProduct GVAR(cameraDir));
 } else {
     _sPos pushBack 0;
 };
@@ -102,6 +101,6 @@ GVAR(collectedActionPoints) pushBack [_sPos select 2, _sPos, _activeActionTree];
 
 END_COUNTER(fnc_renderMenus);
 
-END_COUNTER(fnc_renderBaseMenu)
+END_COUNTER(fnc_renderBaseMenu);
 
 true

@@ -8,6 +8,9 @@
  * Return Value:
  * Function is handled? <BOOL>
  *
+ * Example:
+ * call ace_goggles_fnc_handleFired
+ *
  * Public: No
  */
 #include "script_component.hpp"
@@ -60,14 +63,14 @@ if (!GVAR(surfaceCacheIsDust)) exitWith {true};
 // increment dust value with type bullet
 _bullets = GETDUSTT(DBULLETS);
 
-if (ACE_diagTime - GETDUSTT(DTIME) > 1) then {
+if (diag_tickTime - GETDUSTT(DTIME) > 1) then {
     _bullets = 0;
 };
 
 _bullets = _bullets + 1;
 
 SETDUST(DBULLETS,_bullets);
-SETDUST(DTIME,ACE_diagTime);
+SETDUST(DTIME,diag_tickTime);
 
 // apply dust effect if the amount of fired bullets is over the threshold
 if (GETDUSTT(DAMOUNT) < 2) then {

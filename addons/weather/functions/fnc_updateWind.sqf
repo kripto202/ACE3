@@ -2,11 +2,11 @@
  * Author: ACE2 Team, Ruthberg
  * Updates wind, gusts and waves based on ACE_wind
  *
- * Argument:
- * Nothing
+ * Arguments:
+ * None
  *
- * Return value:
- * Nothing
+ * Return Value:
+ * None
  *
  * Example:
  * [] call ace_weather_fnc_updateWind

@@ -16,12 +16,7 @@
  */
 #include "script_component.hpp"
 
-// Only run if combat deafness is enabled
-if (!GVAR(EnableCombatDeafness)) exitWith {};
-
 params ["_unit", "_damage"];
-
-if (_unit != ACE_player) exitWith {};
 
 TRACE_2("explosion near player",_unit,_damage);
 

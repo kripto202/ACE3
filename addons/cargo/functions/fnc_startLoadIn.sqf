@@ -5,8 +5,9 @@
  * Arguments:
  * 0: Player <OBJECT>
  * 1: Object <OBJECT>
+ * 2: Vehicle <OBJECT> (Optional)
  *
- * Return value:
+ * Return Value:
  * Load ProgressBar Started <BOOL>
  *
  * Example:
@@ -16,15 +17,14 @@
  */
 #include "script_component.hpp"
 
-params ["_player", "_object"];
-TRACE_2("params",_player,_object);
+params ["_player", "_object", ["_cargoVehicle", objNull]];
+TRACE_3("params",_player,_object,_cargoVehicle);
 
-private _vehicle = [_player] call FUNC(findNearestVehicle);
-
-if ((isNull _vehicle) || {_vehicle isKindOf "Cargo_Base_F"}) then {
+private _vehicle = _cargoVehicle;
+if (isNull _vehicle) then {
     {
         if ([_object, _x] call FUNC(canLoadItemIn)) exitWith {_vehicle = _x};
-    } forEach (nearestObjects [_player, ["Cargo_base_F", "Land_PaperBox_closed_F"], MAX_LOAD_DISTANCE]);
+    } forEach (nearestObjects [_player, GVAR(cargoHolderTypes), MAX_LOAD_DISTANCE]);
 };
 
 if (isNull _vehicle) exitWith {
@@ -40,7 +40,7 @@ if ([_object, _vehicle] call FUNC(canLoadItemIn)) then {
     [
         5 * _size,
         [_object,_vehicle],
-        {["LoadCargo", _this select 0] call EFUNC(common,localEvent)},
+        {["ace_loadCargo", _this select 0] call CBA_fnc_localEvent},
         {},
         localize LSTRING(LoadingItem)
     ] call EFUNC(common,progressBar);
@@ -48,7 +48,7 @@ if ([_object, _vehicle] call FUNC(canLoadItemIn)) then {
 } else {
     private _displayName = getText (configFile >> "CfgVehicles" >> typeOf _object >> "displayName");
 
-    ["displayTextStructured", [[LSTRING(LoadingFailed), _displayName], 3.0]] call EFUNC(common,localEvent);
+    [[LSTRING(LoadingFailed), _displayName], 3.0] call EFUNC(common,displayTextStructured);
 };
 
 _return

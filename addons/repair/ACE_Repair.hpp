@@ -12,7 +12,7 @@ class ACE_Repair {
             condition = QUOTE(call FUNC(canReplaceWheel));
             itemConsumed = 0;
             claimObjects[] = {{"ACE_Wheel"}};
-            
+
             callbackSuccess = QUOTE(call FUNC(doReplaceWheel));
             callbackFailure = "";
             callbackProgress = "";
@@ -72,7 +72,7 @@ class ACE_Repair {
             requiredEngineer = QGVAR(engineerSetting_fullRepair);
             repairLocations[] = {QGVAR(fullRepairLocation)};
             repairingTime = 30;
-            condition = "damage _target > 0";
+            condition = "0 < ({_x>0} count (getAllHitPointsDamage _target param [2,[]]))";
             callbackSuccess = QUOTE(call FUNC(doFullRepair));
             itemConsumed = QGVAR(consumeItem_ToolKit);
         };

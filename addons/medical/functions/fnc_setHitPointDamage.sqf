@@ -12,6 +12,9 @@
  * Return Value:
  * None
  *
+ * Example:
+ * [medic, "Leg", 2, false] call ace_medical_fnc_setHitPointDamage
+ *
  * Public: Yes
  */
 
@@ -26,7 +29,7 @@ params ["_unit", "_selection", "_damage", ["_disabled", false]];
 
 // Unit isn't local, give function to machine where it is.
 if !(local _unit) exitWith {
-    ["setHitPointDamage", _unit, _this] call EFUNC(common,targetEvent);
+    [QGVAR(setHitPointDamage), _this, _unit] call CBA_fnc_targetEvent;
 };
 
 // Check if overall damage adjustment is disabled

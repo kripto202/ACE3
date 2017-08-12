@@ -1,41 +1,16 @@
-
 #define MACRO_REARM_ACTIONS \
-        class ACE_Actions { \
-            class ACE_MainActions { \
-                class GVAR(Rearm) { \
-                    displayName = CSTRING(Rearm); \
-                    distance = REARM_ACTION_DISTANCE; \
-                    condition = QUOTE(_this call FUNC(canRearm)); \
-                    statement = QUOTE(_player call FUNC(rearm)); \
-                    exceptions[] = {"isNotInside"}; \
-                    icon = PATHTOF(ui\icon_rearm_interact.paa); \
-                }; \
+    class ACE_Actions { \
+        class ACE_MainActions { \
+            class GVAR(Rearm) { \
+                displayName = CSTRING(Rearm); \
+                distance = REARM_ACTION_DISTANCE; \
+                condition = QUOTE(_this call FUNC(canRearm)); \
+                statement = QUOTE(_this call FUNC(rearm)); \
+                exceptions[] = {"isNotInside"}; \
+                icon = QPATHTOF(ui\icon_rearm_interact.paa); \
             }; \
-        };
-
-#define MACRO_REARM_TRUCK_ACTIONS \
-        class ACE_Actions: ACE_Actions { \
-            class ACE_MainActions: ACE_MainActions { \
-                class GVAR(TakeAmmo) { \
-                    displayName = CSTRING(TakeAmmo); \
-                    distance = REARM_ACTION_DISTANCE; \
-                    condition = QUOTE(_this call FUNC(canTakeAmmo)); \
-                    insertChildren = QUOTE(_target call FUNC(addRearmActions)); \
-                    exceptions[] = {"isNotInside"}; \
-                    showDisabled = 0; \
-                    priority = 2; \
-                    icon = PATHTOF(ui\icon_rearm_interact.paa); \
-                }; \
-                class GVAR(StoreAmmo) { \
-                    displayName = CSTRING(StoreAmmo); \
-                    distance = REARM_ACTION_DISTANCE; \
-                    condition = QUOTE(_this call FUNC(canStoreAmmo)); \
-                    statement = QUOTE(_this call FUNC(storeAmmo)); \
-                    exceptions[] = {"isNotInside"}; \
-                    icon = PATHTOF(ui\icon_rearm_interact.paa); \
-                }; \
-            }; \
-        };
+        }; \
+    };
 
 class CBA_Extended_EventHandlers;
 
@@ -44,7 +19,7 @@ class CfgVehicles {
     class ACE_moduleRearmSettings: ACE_Module {
         scope = 2;
         displayName = CSTRING(RearmSettings_Module_DisplayName);
-        icon = QUOTE(PATHTOF(ui\icon_module_rearm.paa));
+        icon = QPATHTOF(ui\icon_module_rearm.paa);
         category = "ACE_Logistics";
         function = QFUNC(moduleRearmSettings);
         functionPriority = 1;
@@ -69,6 +44,26 @@ class CfgVehicles {
                         name = CSTRING(RearmSettings_caliber);
                         value = 2;
                         default = 1;
+                    };
+                };
+            };
+            class supply {
+                displayName = CSTRING(RearmSettings_supply_DisplayName);
+                description = CSTRING(RearmSettings_supply_Description);
+                typeName = "NUMBER";
+                class values {
+                    class unlimited {
+                        name = CSTRING(RearmSettings_unlimited);
+                        value = 0;
+                        default = 1;
+                    };
+                    class magazine {
+                        name = CSTRING(RearmSettings_limited);
+                        value = 1;
+                    };
+                    class caliber  {
+                        name = CSTRING(RearmSettings_magazineSupply);
+                        value = 2;
                     };
                 };
             };
@@ -105,67 +100,68 @@ class CfgVehicles {
         MACRO_REARM_ACTIONS
     };
 
-
-    // Ammo Vehicles (with full inheritance for granted ACE_Actions)
-    class Car_F: Car {};
-    class Truck_F: Car_F {};
-
-    class Truck_03_base_F: Truck_F {};
+    class Truck_03_base_F;
     class O_Truck_03_ammo_F: Truck_03_base_F {
         transportAmmo = 0;
-        MACRO_REARM_TRUCK_ACTIONS
+        GVAR(defaultSupply) = 1200;
     };
 
-    class Truck_02_base_F: Truck_F {};
-    class Truck_02_Ammo_base_F: Truck_02_base_F {};
+    class Truck_02_Ammo_base_F;
     class I_Truck_02_ammo_F: Truck_02_Ammo_base_F {
         transportAmmo = 0;
-        MACRO_REARM_TRUCK_ACTIONS
+        GVAR(defaultSupply) = 1200;
     };
     class O_Truck_02_Ammo_F: Truck_02_Ammo_base_F {
         transportAmmo = 0;
-        MACRO_REARM_TRUCK_ACTIONS
+        GVAR(defaultSupply) = 1200;
     };
 
-    class Truck_01_base_F: Truck_F {};
-    class B_Truck_01_transport_F: Truck_01_base_F {};
-    class B_Truck_01_mover_F: B_Truck_01_transport_F {};
+    class B_Truck_01_mover_F;
     class B_Truck_01_ammo_F: B_Truck_01_mover_F {
         transportAmmo = 0;
-        MACRO_REARM_TRUCK_ACTIONS
+        GVAR(defaultSupply) = 1200;
     };
 
-    class Helicopter_Base_F: Helicopter {};
-    class Helicopter_Base_H: Helicopter_Base_F {};
-    class Heli_Transport_04_base_F: Helicopter_Base_H {};
+    class B_APC_Tracked_01_base_F;
+    class B_APC_Tracked_01_CRV_F: B_APC_Tracked_01_base_F {
+        transportAmmo = 0;
+        GVAR(defaultSupply) = 1200;
+    };
+
+    class Heli_Transport_04_base_F;
     class O_Heli_Transport_04_ammo_F: Heli_Transport_04_base_F {
         transportAmmo = 0;
-        MACRO_REARM_TRUCK_ACTIONS
+        GVAR(defaultSupply) = 1200;
     };
 
-    class Pod_Heli_Transport_04_base_F: StaticWeapon {};
+    class Pod_Heli_Transport_04_base_F;
     class Land_Pod_Heli_Transport_04_ammo_F: Pod_Heli_Transport_04_base_F {
         transportAmmo = 0;
-        MACRO_REARM_TRUCK_ACTIONS
+        GVAR(defaultSupply) = 1200;
     };
 
-    class Slingload_base_F;
-    class Slingload_01_Base_F: Slingload_base_F {
-        class ACE_Actions {
-            class ACE_MainActions {
-                displayName = ECSTRING(interaction,MainAction);
-                selection = "";
-                distance = 10;
-                condition = "true";
-            };
-        };
-    };
-
+    class Slingload_01_Base_F;
     class B_Slingload_01_Ammo_F: Slingload_01_Base_F {
         transportAmmo = 0;
-        MACRO_REARM_TRUCK_ACTIONS
+        GVAR(defaultSupply) = 1200;
     };
 
+    class ReammoBox_F;
+    class NATO_Box_Base: ReammoBox_F{};
+    class Box_NATO_AmmoVeh_F: NATO_Box_Base {
+        transportAmmo = 0;
+        GVAR(defaultSupply) = 1200;
+    };
+    class EAST_Box_Base: ReammoBox_F{};
+    class Box_East_AmmoVeh_F: EAST_Box_Base {
+        transportAmmo = 0;
+        GVAR(defaultSupply) = 1200;
+    };
+    class IND_Box_Base: ReammoBox_F{};
+    class Box_IND_AmmoVeh_F: IND_Box_Base {
+        transportAmmo = 0;
+        GVAR(defaultSupply) = 1200;
+    };
 
     // Dummy Vehicles
     class ThingX;
@@ -188,7 +184,7 @@ class CfgVehicles {
                 exceptions[] = {"isNotInside"};
                 showDisabled = 0;
                 priority = 2;
-                icon = PATHTOF(ui\icon_rearm_interact.paa);
+                icon = QPATHTOF(ui\icon_rearm_interact.paa);
             };
         };
     };

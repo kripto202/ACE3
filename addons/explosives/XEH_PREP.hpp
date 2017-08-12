@@ -2,6 +2,7 @@
 PREP(addCellphoneIED);
 PREP(addClacker);
 PREP(addDetonateActions);
+PREP(addDetonateHandler);
 PREP(addExplosiveActions);
 PREP(addToSpeedDial);
 PREP(addTransmitterActions);
@@ -42,6 +43,7 @@ PREP(selectTrigger);
 PREP(setupExplosive);
 PREP(setPosition);
 PREP(setSpeedDial);
+PREP(spawnFlare);
 PREP(startDefuse);
 PREP(startTimer);
 PREP(triggerType);
